@@ -10,7 +10,7 @@ function cartReducer(state, action) {
   if (action.type === "ADD_ITEM") {
     const updatedItems = [...state.items];
 
-    // verifico se è presente uno stesso elemento nell'array
+    // verifico se è presente almeno un elemento nell'array
     // findIndex ritorna -1 se non sono presenti elementi nell'array
     const existingCartItemIndex = updatedItems.findIndex(
       (cartItem) => cartItem.id === action.payload.item.id
@@ -39,6 +39,29 @@ function cartReducer(state, action) {
   }
 
   if (action.type === "REMOVE_ITEM") {
+    const updatedItems = [...state.items];
+
+    const existingCartItemIndex = updatedItems.findIndex(
+      (cartItem) => cartItem.id === action.payload.item.id
+    );
+
+    const existingCartItem = updatedItems[existingCartItemIndex];
+
+    // per eliminare un elemento riduco la quantità finche non raggiunge 1
+    // quindi verifico che se è ugale a 1 e lo rimuovo con splice
+
+    if (existingCartItem.quantity === 1) {
+      // splice(indice dell'elemento da eliminare, numero elemento)
+      updatedItems.splice(existingCartItemIndex, 1);
+    } else {
+      const updatedItem = {
+        ...existingCartItem,
+        quantity: existingCartItem.quantity - 1,
+      };
+
+      updatedItems[existingCartItemIndex] = updatedItem;
+    }
+
     return {
       items: updatedItems,
     };
@@ -61,9 +84,19 @@ export default function CartContextProvider({ children }) {
     });
   }
 
+  function handleRemoveItem(item) {
+    cartDispatch({
+      type: "REMOVE_ITEM",
+      payload: {
+        item: item,
+      },
+    });
+  }
+
   const ctxValue = {
     items: cartState.items,
     addItemToCart: handleAddToCart,
+    removeItem: handleRemoveItem,
   };
 
   return (
