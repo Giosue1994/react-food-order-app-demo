@@ -1,3 +1,5 @@
+import Button from "./Button";
+
 export default function Error({ title, message, onConfirm }) {
   return (
     <div className="error">
@@ -5,9 +7,9 @@ export default function Error({ title, message, onConfirm }) {
       <p>{message}</p>
       {onConfirm && (
         <div id="confirmation-actions">
-          <button onClick={onConfirm} className="button">
+          <Button buttonType={"button"} onClick={onConfirm}>
             Okay
-          </button>
+          </Button>
         </div>
       )}
     </div>
