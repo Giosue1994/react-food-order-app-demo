@@ -1,10 +1,11 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { CartContext } from "../store/cart-context";
 import { ModalContext } from "../store/modal-context";
 import { currencyFormatter } from "../util/formatting";
 import Input from "./Input";
 import Button from "./Button";
 import Modal from "./Modal";
+import { cartOrders } from "../http";
 
 export default function Checkout() {
   const { items } = useContext(CartContext);
@@ -22,7 +23,7 @@ export default function Checkout() {
     const fd = new FormData(event.target);
     const data = Object.fromEntries(fd.entries());
 
-    console.log(data);
+    cartOrders(items, data);
   }
 
   return (
@@ -33,11 +34,11 @@ export default function Checkout() {
     >
       <form onSubmit={handleSubmit}>
         <p>Totale carrello: {formattingTotalPrice}</p>
-        <Input type="text" id="fullName" label="Nome e Cognome" />
+        <Input type="text" id="name" label="Nome e Cognome" />
         <Input type="email" id="email" label="E-mail" />
-        <Input type="text" id="address" label="Indirizzo" />
+        <Input type="text" id="street" label="Indirizzo" />
         <div className="control-row">
-          <Input type="number" id="cap" label="CAP" />
+          <Input type="number" id="postal-code" label="CAP" />
           <Input type="text" id="city" label="Città" />
         </div>
         <div className="modal-actions">

@@ -8,3 +8,24 @@ export async function fetchAvailableMeals() {
 
   return resData;
 }
+
+export async function cartOrders(orders, data) {
+  const response = await fetch("http://localhost:3000/orders", {
+    method: "POST",
+    body: JSON.stringify({
+      order: {
+        items: orders,
+        customer: data,
+      },
+    }),
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update orders");
+  }
+
+  return response;
+}
