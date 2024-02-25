@@ -1,16 +1,20 @@
 import AvailableMeals from "./components/AvailableMeals";
-import Cart from "./components/Cart";
 import Header from "./components/Header";
+import Cart from "./components/Cart";
+import Checkout from "./components/Checkout";
 import CartContextProvider from "./store/cart-context";
+import ModalContextProvider from "./store/modal-context";
 
 function App() {
   return (
-    <CartContextProvider>
-      <Header />
-      <main>
+    <ModalContextProvider>
+      <CartContextProvider>
+        <Header />
+        <Cart />
+        <Checkout />
         <AvailableMeals />
-      </main>
-    </CartContextProvider>
+      </CartContextProvider>
+    </ModalContextProvider>
   );
 }
 
