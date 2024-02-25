@@ -9,7 +9,7 @@ export default function AvailableMeals() {
   const [availableMeals, setAvailableMeals] = useState([]);
   const [error, setError] = useState();
 
-  const { addItemToCart } = useContext(CartContext);
+  const { addItem } = useContext(CartContext);
 
   useEffect(() => {
     async function fetchMeals() {
@@ -44,7 +44,7 @@ export default function AvailableMeals() {
       {!isLoading && availableMeals.length > 0 && (
         <ul id="meals">
           {availableMeals.map((meal) => (
-            <MealItem key={meal.id} meal={meal} addToCart={addItemToCart} />
+            <MealItem key={meal.id} meal={meal} addToCart={addItem} />
           ))}
         </ul>
       )}

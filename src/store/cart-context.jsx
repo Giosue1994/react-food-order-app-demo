@@ -2,7 +2,7 @@ import { createContext, useReducer } from "react";
 
 export const CartContext = createContext({
   items: [],
-  addItemToCart: (item) => {},
+  addItem: (item) => {},
   removeItem: (id) => {},
 });
 
@@ -95,7 +95,7 @@ export default function CartContextProvider({ children }) {
 
   const ctxValue = {
     items: cartState.items,
-    addItemToCart: handleAddToCart,
+    addItem: handleAddToCart,
     removeItem: handleRemoveItem,
   };
 
