@@ -1,53 +1,39 @@
-import { useState, useEffect, useContext } from "react";
+import { useContext } from "react";
 import Error from "./Error.jsx";
 import MealItem from "./MealItem.jsx";
 import { CartContext } from "../store/cart-context.jsx";
-import { fetchAvailableMeals } from "../http.js";
+import useHttp from "../hooks/useHttp.jsx";
+
+const requestConfig = {};
 
 export default function AvailableMeals() {
-  const [isLoading, setIsLoading] = useState(false);
-  const [availableMeals, setAvailableMeals] = useState([]);
-  const [error, setError] = useState();
-
   const { addItem } = useContext(CartContext);
 
-  useEffect(() => {
-    async function fetchMeals() {
-      setIsLoading(true);
-
-      try {
-        const meals = await fetchAvailableMeals();
-
-        setAvailableMeals(meals);
-      } catch (error) {
-        setError({
-          message: error.message || "Impossibile recuperare i prodotti.",
-        });
-      }
-
-      setIsLoading(false);
-    }
-
-    fetchMeals();
-  }, []);
+  const {
+    data: availableMeals,
+    isLoading,
+    error,
+  } = useHttp("http://localhost:3000/meals", requestConfig, []);
 
   if (error) {
-    return <Error title="Si è verificato un errore!" message={error.message} />;
+    return <Error title="Si è verificato un errore!" message={error} />;
   }
 
-  return (
-    <>
-      {isLoading && <p>Caricamento prodotti...</p>}
-      {!isLoading && availableMeals.length === 0 && (
-        <p>Nessun prodotto disponibile.</p>
-      )}
-      {!isLoading && availableMeals.length > 0 && (
-        <ul id="meals">
-          {availableMeals.map((meal) => (
-            <MealItem key={meal.id} meal={meal} addToCart={addItem} />
-          ))}
-        </ul>
-      )}
-    </>
-  );
+  if (isLoading) {
+    return <p className="center">Caricamento prodotti...</p>;
+  }
+
+  if (!isLoading && availableMeals.length === 0) {
+    return <p className="center">Nessun prodotto disponibile.</p>;
+  }
+
+  if (!isLoading && availableMeals.length > 0) {
+    return (
+      <ul id="meals">
+        {availableMeals.map((meal) => (
+          <MealItem key={meal.id} meal={meal} addToCart={addItem} />
+        ))}
+      </ul>
+    );
+  }
 }

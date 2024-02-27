@@ -14,12 +14,26 @@ body {
   min-height: 100vh;
 }
 
+.center {
+  text-align: center;
+}
+
 .error {
-  max-width: 40rem;
-  margin: 1rem auto;
+  width: 90%;
+  max-width: 25rem;
+  margin: 2rem auto;
   padding: 1rem;
-  background-color: #f4c7c7;
-  color: #3e0505;
+  background-color: #f9b8b8;
+  color: #6d0b0b;
+  border-radius: 6px;
+}
+
+.error h2 {
+  margin: 0;
+}
+
+.error p {
+  margin: 0;
 }
 
 #main-header {
@@ -27,6 +41,11 @@ body {
   justify-content: space-between;
   align-items: center;
   padding: 3rem 10%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background-color: #29251c;
 }
 
 #main-header #title {
@@ -63,7 +82,7 @@ h1 {
   max-width: 70rem;
   list-style: none;
   margin: 2rem auto;
-  padding: 1rem;
+  padding: 10rem 1rem 1rem;
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(20rem, 1fr));
   gap: 1rem;
